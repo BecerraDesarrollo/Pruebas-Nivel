@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import com.ecommercefarm.test.data.Film;
 import com.ecommercefarm.test.data.FilmList;
-import com.ecommercefarm.test.data.FirebaseData;
 import com.ecommercefarm.test.data.RemoteList;
 
 import androidx.appcompat.app.AppCompatActivity;
