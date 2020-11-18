@@ -17,6 +17,5 @@ public class FirebaseDataTest {
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
         FirebaseApp.initializeApp(appContext);
-
     }
 }
