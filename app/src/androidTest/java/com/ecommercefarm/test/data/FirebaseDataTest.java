@@ -18,6 +18,5 @@ public class FirebaseDataTest {
 
         FirebaseApp.initializeApp(appContext);
 
-        FirebaseData.load();
     }
 }
