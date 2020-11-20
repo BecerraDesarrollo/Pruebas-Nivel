@@ -4,14 +4,13 @@ import android.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ecommercefarm.test.data.Film;
-import com.ecommercefarm.test.data.FilmList;
+import com.ecommercefarm.test.data.Book;
+import com.ecommercefarm.test.data.BookList;
 
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.Holder>{
 
@@ -38,12 +37,12 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.Holder>{
 
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int position) {
-        Film film=FilmList.get(position);
-        id.setText(String.valueOf(film.id));
-        title.setText(film.title);
-        gener.setText(film.genre);
-        isbn.setText(film.isbn);
-        description.setText(film.description);
+        Book book = BookList.get(position);
+        id.setText(String.valueOf(book.getId()));
+        title.setText(book.getTitle());
+        gener.setText(book.getGenre());
+        isbn.setText(String.valueOf(book.getIsbn()));
+        description.setText(book.getDescription());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,11 +61,11 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.Holder>{
                 isbn=dialogoView.findViewById(R.id.isbnTextView);
                 description=dialogoView.findViewById(R.id.descriptionTextView);
 
-                id.setText(String.valueOf(film.id));
-                title.setText(film.title);
-                gener.setText(film.genre);
-                isbn.setText(film.isbn);
-                description.setText(film.description);
+                id.setText(String.valueOf(book.getId()));
+                title.setText(book.getTitle());
+                gener.setText(book.getGenre());
+                isbn.setText(String.valueOf(book.getIsbn()));
+                description.setText(book.getDescription());
 
                 final AlertDialog.Builder dialogo=new AlertDialog.Builder(view.getContext());
                 dialogo.setView(dialogoView).setNegativeButton("Volver",null).
@@ -78,7 +77,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.Holder>{
 
     @Override
     public int getItemCount() {
-        return FilmList.size();
+        return BookList.size();
     }
 
     public class Holder extends RecyclerView.ViewHolder{

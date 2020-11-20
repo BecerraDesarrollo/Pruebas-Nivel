@@ -2,7 +2,6 @@ package com.ecommercefarm.test.data;
 
 import android.util.Log;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -26,7 +25,7 @@ public class RemoteList {
                         .build();
 
                 RestService service = retrofit.create(RestService.class);
-                Call<List<Film>> films;
+                Call<List<Book>> films;
 
                 switch (filter){
                     case NOT:
@@ -39,13 +38,13 @@ public class RemoteList {
                         films = service.all();
                 }
 
-                films.enqueue(new Callback<List<Film>>() {
+                films.enqueue(new Callback<List<Book>>() {
                     @Override
-                    public void onResponse(Call<List<Film>> call, Response<List<Film>> response) {
+                    public void onResponse(Call<List<Book>> call, Response<List<Book>> response) {
                         if (!response.isSuccessful()){
                             Log.e("RemoteList", "Error loading. Code: " + response.code());
                         }else {
-                            FilmList.set(response.body());
+                            BookList.set(response.body());
                             if(event!=null)
                                 event.loaded();
                             Log.i("RemoteList", "List loaded");
@@ -53,7 +52,7 @@ public class RemoteList {
                     }
 
                     @Override
-                    public void onFailure(Call<List<Film>> call, Throwable t) {
+                    public void onFailure(Call<List<Book>> call, Throwable t) {
                         for(StackTraceElement er:t.getStackTrace())
                             Log.e("RemoteList", "Error: " + er.toString());
                     }
@@ -70,6 +69,6 @@ public class RemoteList {
         NOT,YES
     }
     public interface RemoteListEvent{
-        public void loaded();
+        void loaded();
     }
 }
