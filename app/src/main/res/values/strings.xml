@@ -19,6 +19,9 @@
     <string name="crime">Crimen</string>
     <string name="romance">Romance</string>
 
+    <string name="maintenance_title">APP en mantenimiento</string>
+    <string name="maintenance_message">Estamos mejorando la APP. Disculpe las molestias.</string>
+
     <string-array name="genre">
         <item> Selecciona opción </item>
         <item>@string/fantasy</item>

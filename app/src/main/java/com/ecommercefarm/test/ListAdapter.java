@@ -13,11 +13,11 @@ import com.ecommercefarm.test.data.Book;
 import com.ecommercefarm.test.data.BookList;
 
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.Holder>{
-
+//Adapter para poder mostrar la lista de datos en un RecyclerView
     private ViewGroup parent;
     private TextView id,
             title,
-            gener,
+            genre,
             isbn,
             description;
 
@@ -29,7 +29,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.Holder>{
                 .inflate(R.layout.item_layout,parent, false);
         id=view.findViewById(R.id.idTextView);
         title=view.findViewById(R.id.titleTextView);
-        gener=view.findViewById(R.id.genreTextView);
+        genre =view.findViewById(R.id.genreTextView);
         isbn=view.findViewById(R.id.isbnTextView);
         description=view.findViewById(R.id.descriptionTextView);
         return new Holder(view);
@@ -40,9 +40,10 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.Holder>{
         Book book = BookList.get(position);
         id.setText(String.valueOf(book.getId()));
         title.setText(book.getTitle());
-        gener.setText(book.getGenre());
+        genre.setText(book.getGenre());
         isbn.setText(String.valueOf(book.getIsbn()));
         description.setText(book.getDescription());
+        //Realizamos una escucha a los items para podeer mostrar un diálogo al cliquear
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
