@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void maintenance(boolean is) {
+                //Activa o desactiva un layout en función de si está o no en mantenimiento.
                 if(is){
                     setContentView(R.layout.maintenance_layout);
                 }else{
