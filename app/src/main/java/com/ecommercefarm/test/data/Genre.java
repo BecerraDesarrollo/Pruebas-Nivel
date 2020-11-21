@@ -1,6 +1,7 @@
 package com.ecommercefarm.test.data;
 
 public enum Genre {
+    //Enumeración para pdeer hacer filtrados
     EMPTY(""),
     FANTASY("fantasy"),
     CRIME("crime"),

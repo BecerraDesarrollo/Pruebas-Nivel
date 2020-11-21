@@ -14,8 +14,8 @@ import com.google.firebase.database.ValueEventListener;
 public class FirebaseData {
     private FireBaseDataEvent event=null;
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private final DatabaseReference root = database.getReference("messages");
-
+    private final DatabaseReference datas = database.getReference("messages");
+    private final DatabaseReference maintenance = database.getReference("maintenance");
 
     public void loadAll(){
 
@@ -24,7 +24,7 @@ public class FirebaseData {
         //Se limpia la lista.
         BookList.clear();
         //Se añade la escucha para gestionar cuando se reciban los datos.
-        root.addListenerForSingleValueEvent(new ValueEventListener() {
+        datas.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Log.d("FirebaseData","loadAll");
@@ -65,7 +65,7 @@ public class FirebaseData {
         //Se limpia la lista.
         BookList.clear();
         //Se añade la escucha para gestionar cuando se reciban los datos.
-        root.orderByChild("genre").equalTo(genre.value()).addListenerForSingleValueEvent(new ValueEventListener() {
+        datas.orderByChild("genre").equalTo(genre.value()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Log.d("FirebaseData","loadFilter: "+genre.value());
@@ -99,6 +99,29 @@ public class FirebaseData {
         Log.i("FirebaseData","Loaded");
     }
 
+    public void service(){
+        Log.i("FirebaseData","Service");
+        maintenance.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Log.d("FirebaseData","Service: "+snapshot.getValue());
+                //Se genera un evento en caso de que entre o salga de mantenimiento
+                if(snapshot.getValue(Integer.class)==0){
+                    if(event!=null)
+                        event.maintenance(false);
+                }else{
+                    if(event!=null)
+                        event.maintenance(true);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
     public void setActionListeners(FireBaseDataEvent event){
         this.event=event;
     }
@@ -108,5 +131,6 @@ public class FirebaseData {
         //Se crea una interfaz para que se puedan crear eventos
         void loaded();
         void canceled();
+        void maintenance(boolean is);
     }
 }

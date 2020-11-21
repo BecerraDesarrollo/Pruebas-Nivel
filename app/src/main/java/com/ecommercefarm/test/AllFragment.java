@@ -71,6 +71,11 @@ public class AllFragment extends Fragment {
             public void canceled() {
                 Toast.makeText(getContext(),"Carga de datos cancelada",Toast.LENGTH_SHORT);
             }
+
+            @Override
+            public void maintenance(boolean is) {
+                Log.i("AllFragment","maintenance");
+            }
         });
         //Se intenta cargar todos los datos
         data.loadAll();

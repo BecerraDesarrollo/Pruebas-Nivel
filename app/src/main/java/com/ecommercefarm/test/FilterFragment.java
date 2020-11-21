@@ -71,6 +71,11 @@ public class FilterFragment extends Fragment {
             public void canceled() {
                 Toast.makeText(getContext(),"Carga de datos cancelada",Toast.LENGTH_SHORT);
             }
+
+            @Override
+            public void maintenance(boolean is) {
+                Log.i("AllFragment","maintenance");
+            }
         });
         //Se crea una lsta vacia
         data.loadFilter(Genre.EMPTY);

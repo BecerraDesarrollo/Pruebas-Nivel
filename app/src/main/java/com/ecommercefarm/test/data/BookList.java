@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BookList {
+    //clase estatica que guardará los datos recibidos
     private static List<Book> list=new ArrayList();
 
     public static void add(Book book){
