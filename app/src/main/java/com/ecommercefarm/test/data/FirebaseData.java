@@ -13,6 +13,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class FirebaseData {
     private FireBaseDataEvent event=null;
+    private ValueEventListener valueEventListener;
     private final FirebaseDatabase database = FirebaseDatabase.getInstance();
     private final DatabaseReference datas = database.getReference("messages");
     private final DatabaseReference maintenance = database.getReference("maintenance");
@@ -20,29 +21,17 @@ public class FirebaseData {
     public void loadAll(){
 
         Log.i("FirebaseData","Loading... ");
+        //Se eliminan anteriores escuchas;
+        removeListeners();
 
-        //Se limpia la lista.
-        BookList.clear();
         //Se añade la escucha para gestionar cuando se reciban los datos.
-        datas.addListenerForSingleValueEvent(new ValueEventListener() {
+        datas.addListenerForSingleValueEvent(
+                valueEventListener=new ValueEventListener() {
+
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Log.d("FirebaseData","loadAll");
-                //Se crea un libro por cada elemento recibido
-                for(DataSnapshot data:snapshot.getChildren()){
-                    Book book=new Book();
-                    book.setId(Integer.valueOf(data.getKey()));
-                    book.setTitle((String)data.child("title").getValue());
-                    book.setIsbn((long)data.child("isbn").getValue());
-                    book.setGenre((String)data.child("genre").getValue());
-                    book.setDescription((String)data.child("description").getValue());
-                    BookList.add(book);
-                    //Log.d("FirebaseData",book.toString());
-                }
-                //Se genera un evento cuando ya no se reciben más elementos para que se pueda trabajar con la lista.
-                if(event!=null){
-                    event.loaded();
-                }
+                load(snapshot);
             }
 
             @Override
@@ -62,28 +51,16 @@ public class FirebaseData {
 
         Log.i("FirebaseData","Loading... ");
 
-        //Se limpia la lista.
-        BookList.clear();
+        //Se eliminan anteriores escuchas;
+        removeListeners();
+
         //Se añade la escucha para gestionar cuando se reciban los datos.
-        datas.orderByChild("genre").equalTo(genre.value()).addListenerForSingleValueEvent(new ValueEventListener() {
+        datas.orderByChild("genre").equalTo(genre.value()).addListenerForSingleValueEvent(
+                valueEventListener=new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Log.d("FirebaseData","loadFilter: "+genre.value());
-                //Se crea un libro por cada elemento recibido
-                for(DataSnapshot data:snapshot.getChildren()){
-                    Book book=new Book();
-                    book.setId(Integer.valueOf(data.getKey()));
-                    book.setTitle((String)data.child("title").getValue());
-                    book.setIsbn((long)data.child("isbn").getValue());
-                    book.setGenre((String)data.child("genre").getValue());
-                    book.setDescription((String)data.child("description").getValue());
-                    BookList.add(book);
-                    //Log.d("FirebaseData",book.toString());
-                }
-                //Se genera un evento cuando ya no se reciben más elementos para que se pueda trabajar con la lista.
-                if(event!=null){
-                    event.loaded();
-                }
+                load(snapshot);
             }
 
             @Override
@@ -99,6 +76,31 @@ public class FirebaseData {
         Log.i("FirebaseData","Loaded");
     }
 
+    private void load(DataSnapshot snapshot){
+        //Se limpia la lista.
+        BookList.clear();
+        //Se crea un libro por cada elemento recibido
+        for(DataSnapshot data:snapshot.getChildren()){
+            Book book=new Book();
+            book.setId(Integer.valueOf(data.getKey()));
+            book.setTitle((String)data.child("title").getValue());
+            book.setIsbn((long)data.child("isbn").getValue());
+            book.setGenre((String)data.child("genre").getValue());
+            book.setDescription((String)data.child("description").getValue());
+            BookList.add(book);
+            //Log.d("FirebaseData",book.toString());
+        }
+        //Se genera un evento cuando ya no se reciben más elementos para que se pueda trabajar con la lista.
+        if(event!=null){
+            event.loaded();
+        }
+    }
+
+    public void removeListeners(){
+        if(valueEventListener!=null)
+            datas.removeEventListener(valueEventListener);
+    }
+
     public void service(){
         Log.i("FirebaseData","Service");
         maintenance.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -112,6 +114,7 @@ public class FirebaseData {
                 }else{
                     if(event!=null)
                         event.maintenance(true);
+
                 }
             }
 

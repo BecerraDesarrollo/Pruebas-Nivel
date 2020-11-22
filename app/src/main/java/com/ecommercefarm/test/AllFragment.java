@@ -19,9 +19,6 @@ import com.ecommercefarm.test.data.FirebaseData;
 
 public class AllFragment extends Fragment {
 
-    private ViewGroup container;
-    private View content;
-
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
@@ -39,21 +36,7 @@ public class AllFragment extends Fragment {
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(llm);
-        ////////
-
-        //Se instancia el switch que controlara el filtro//
-        Switch filter = view.findViewById(R.id.filter);
-        filter.setChecked(false);
-        //Se crea una escucha para pasar al otro fragment
-        filter.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    NavHostFragment.findNavController(AllFragment.this)
-                            .navigate(R.id.action_FirstFragment_to_SecondFragment);
-                }
-            }
-        });
-        ////////
+        /////////
 
         //Se instancia FirebaseData//
         FirebaseData data=new FirebaseData();
@@ -77,6 +60,22 @@ public class AllFragment extends Fragment {
                 Log.i("AllFragment","maintenance");
             }
         });
+
+        //Se instancia el switch que controlara el filtro//
+        Switch filter = view.findViewById(R.id.filter);
+        filter.setChecked(false);
+        //Se crea una escucha para pasar al otro fragment
+        filter.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    data.removeListeners();
+                    NavHostFragment.findNavController(AllFragment.this)
+                            .navigate(R.id.action_FirstFragment_to_SecondFragment);
+                }
+            }
+        });
+        ///////
+
         //Se intenta cargar todos los datos
         data.loadAll();
         ////////

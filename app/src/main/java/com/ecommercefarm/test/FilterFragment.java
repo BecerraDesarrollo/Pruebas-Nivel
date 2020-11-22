@@ -41,20 +41,6 @@ public class FilterFragment extends Fragment {
         recyclerView.setLayoutManager(llm);
         ////////
 
-        //Se instancia el switch que controlara el filtro//
-        Switch filter = viewFragment.findViewById(R.id.filter);
-        filter.setChecked(true);
-        //Se crea una escucha para pasar al otro fragment
-        filter.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(!isChecked){
-                    NavHostFragment.findNavController(FilterFragment.this)
-                            .navigate(R.id.action_SecondFragment_to_FirstFragment);
-                }
-            }
-        });
-        ////////
-
         //Se instancia FirebaseData//
         FirebaseData data=new FirebaseData();
         //Se crea una escucha para que cuando estén los datos cargados se cree la lista.
@@ -77,6 +63,22 @@ public class FilterFragment extends Fragment {
                 Log.i("AllFragment","maintenance");
             }
         });
+
+        //Se instancia el switch que controlara el filtro//
+        Switch filter = viewFragment.findViewById(R.id.filter);
+        filter.setChecked(true);
+        //Se crea una escucha para pasar al otro fragment
+        filter.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(!isChecked){
+                    data.removeListeners();
+                    NavHostFragment.findNavController(FilterFragment.this)
+                            .navigate(R.id.action_SecondFragment_to_FirstFragment);
+                }
+            }
+        });
+        ////////
+
         //Se crea una lsta vacia
         data.loadFilter(Genre.EMPTY);
         ////////
