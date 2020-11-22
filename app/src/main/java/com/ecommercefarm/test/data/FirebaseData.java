@@ -73,6 +73,7 @@ public class FirebaseData {
             }
         });
 
+
         Log.i("FirebaseData","Loaded");
     }
 
@@ -116,6 +117,7 @@ public class FirebaseData {
                         event.maintenance(true);
 
                 }
+                Log.d("FirebaseData","Service created ");
             }
 
             @Override

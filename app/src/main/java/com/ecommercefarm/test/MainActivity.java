@@ -9,8 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.ecommercefarm.test.data.FirebaseData;
 
 public class MainActivity extends AppCompatActivity {
-    public static FirebaseData service;
     private final MainActivity mainActivity=this;
+    private FirebaseData service;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,14 +18,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        Log.i("MainActivity","Created");
-    }
-    @Override
-    public void onResume(){
-        super.onResume();
-        FirebaseData data=new FirebaseData();
+        service=new FirebaseData();
 
-        data.setActionListeners(new FirebaseData.FireBaseDataEvent() {
+        service.setActionListeners(new FirebaseData.FireBaseDataEvent() {
 
             Intent intent=new Intent();
             @Override
@@ -40,8 +35,9 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void maintenance(boolean is) {
-                //Activa o desactiva un layout en función de si está o no en mantenimiento.
+                //Sen activa un layout de mantenimiento.
                 if(is){
+                    service.removeListeners();
                     intent=new Intent(mainActivity,Maintenance.class);
                     startActivity(intent);
 
@@ -49,7 +45,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        data.service();
-        service=data;
+        Log.i("MainActivity","Created");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        service.service();
     }
 }
